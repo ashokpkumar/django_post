@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #f8f8f8;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .logout-button {
+            background-color: #ff4d4d;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .container {
+            display: flex;
+        }
+        .left-panel {
+            background-color: #f2f2f2;
+            padding: 20px;
+            width: 200px;
+        }
+        .left-panel a {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #ddd;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .left-panel a:hover {
+            background-color: #ccc;
+        }
+        .content {
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 1200px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Order List</h1>
+        <div class="header"></div>
+            <div class="button-container">
+                <a href="/start" class="delivery-button" style="background-color: #4CAF50; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">Start Delivery</a>
+                <a href="/logout" class="logout-button">Logout</a>
+            </div>
+        </div></div>
+    </div>
+    <div class="container">
+        <div class="left-panel">
+            <a href="#">Orders</a>
+            <a href="#">Profile</a>
+            <a href="#">Payment</a>
+            <a href="#">Analysis</a>
+        </div>
+        <div class="content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Location</th>
+                        <th>Street Address</th>
+                        <th>Landmark</th>
+                        <th>Priority</th>
+                        <th>Phone Number</th>
+                        <th>Door Number</th>
+                        <th>Order Weight</th>
+                        <th>Order Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.order_id }}</td>
+                        <td>{{ item.location }}</td>
+                        <td>{{ item.street_address }}</td>
+                        <td>{{ item.landmark }}</td>
+                        <td>{{ item.priority }}</td>
+                        <td>{{ item.phone_number }}</td>
+                        <td>{{ item.door_number }}</td>
+                        <td>{{ item.order_weight }}</td>
+                        <td>{{ item.order_status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
