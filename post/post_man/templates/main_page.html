@@ -90,13 +90,12 @@
                 <thead>
                     <tr>
                         <th>Order ID</th>
-                        <th>Location</th>
-                        <th>Street Address</th>
+                        <th>street_address</th>
+                        <th>city</th>
                         <th>Landmark</th>
                         <th>Priority</th>
                         <th>Phone Number</th>
-                        <th>Door Number</th>
-                        <th>Order Weight</th>
+                    
                         <th>Order Status</th>
                     </tr>
                 </thead>
@@ -104,13 +103,12 @@
                     {% for item in items %}
                     <tr>
                         <td>{{ item.order_id }}</td>
-                        <td>{{ item.location }}</td>
                         <td>{{ item.street_address }}</td>
+                        <td>{{ item.city }}</td>
                         <td>{{ item.landmark }}</td>
                         <td>{{ item.priority }}</td>
                         <td>{{ item.phone_number }}</td>
-                        <td>{{ item.door_number }}</td>
-                        <td>{{ item.order_weight }}</td>
+                      
                         <td>{{ item.order_status }}</td>
                     </tr>
                     {% endfor %}

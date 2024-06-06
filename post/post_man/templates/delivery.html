@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer with Fields</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .pdf-viewer {
+            flex: 1;
+            overflow: hidden;
+        }
+        .pdf-viewer iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .fields {
+            padding: 20px;
+            background-color: #f8f8f8;
+            border-top: 1px solid #ccc;
+        }
+        .fields h2 {
+            margin-top: 0;
+        }
+        .list {
+            display: flex;
+            flex-wrap: wrap;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .list li {
+            flex: 1 1 33.33%;
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="pdf-viewer">
+    <div class="container">
+        <div class="pdf-viewer">
+            <iframe src="data:application/pdf;base64,{{ item.b64_link }}"></iframe>
+        </div>
+        <div class="fields">
+            <h2>Customer Details</h2>
+            <ul class="list">
+                <li>Order ID: {{ item.order_id }}</li>
+                <li>Customer Name: {{ item.customer_name }}</li>
+                <li>Door Number: {{ item.door_number }}</li>
+                <li>Apartment Number: {{ item.apartment_number }}</li>
+                <li>Street Address: {{ item.street_address }}</li>
+                <li>City: {{ item.city }}</li>
+                <li>Country: {{ item.country }}</li>
+                <li>Pincode: {{ item.pincode }}</li>
+                <li>Phone Number: {{ item.phone_number }}</li>
+                <li>Landmark: {{ item.landmark }}</li>
+                <li>Order Weight: {{ item.order_weight }}</li>
+                <li>Item Type: {{ item.item_type }}</li>
+                <li>Battery Included: {{ item.battery_included }}</li>
+                <li>Expected Delivery Date: {{ item.expected_delivery_date }}</li>
+                <li>Priority: {{ item.priority }}</li>
+                <li>Order Status: {{ item.order_status }}</li>
+                <li>Time remaining: <span id="time-remaining"></span></li>
+
+                <li><button onclick="window.location.href = '/delivered/{{item.order_id}}'">Delivered</button></li>
+                <li><button onclick="window.location.href = '/not_reachable/{{item.order_id}}'">Not Reachable</button></li>
+                <li><button onclick="window.location.href = '/damaged/{{item.order_id}}'">Damaged</button></li>
+                <li><button onclick="window.location.href = '/cus_rejected/{{item.order_id}}'">Cs Rejected</button></li>
+                <li><button onclick="window.location.href = '/authenticate'">Stop Delivering</button></li>
+                <li><button onclick="window.location.href = '/logout'">Logout</button></li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script>
+    // Get the expected delivery date from the server
+    var expectedDeliveryDate = new Date("{{ item.expected_delivery_date }}");
+
+    // Calculate the time remaining in hours
+    var currentTime = new Date();
+    var timeRemaining = Math.ceil((expectedDeliveryDate - currentTime) / (1000 * 60 * 60));
+
+    // Display the time remaining
+    document.getElementById("time-remaining").textContent = timeRemaining + " hours";
+</script>
+</html>
