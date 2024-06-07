@@ -26,7 +26,11 @@ SECRET_KEY = "django-insecure-_195y!m0b%-%vw-(2+xopqg5hczxp)ko1zdsgzzm^38fb=galz
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 
 # Application definition
 
