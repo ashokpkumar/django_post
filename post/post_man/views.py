@@ -177,50 +177,124 @@ class Delivery(View):
             return None
         
     def get(self, request):
-        context = {'item':self.get_item_details() }
-        return render(request, 'delivery copy.html',context)
+        item_details = self.get_item_details()
+        if item_details is not None: 
+                context = {'item': item_details}
+                return render(request, 'delivery copy.html',context)
+        else:
+            context = {
+                'token': request.POST.get('token'),
+                'items': AuthView().get_items()
+            }
+            return render(request, 'main_page.html', context)
+        # context = {'item':self.get_item_details() }
+        # return render(request, 'delivery copy.html',context)
     
 
 class Delivered(View):
     def get(self, request,order_id):
-        item = Order.objects.get(order_id=order_id)
-        item.order_status = 'delivered'
-        item.save()
-        context = {'item':Delivery().get_item_details( f'{ item.street_address}, {item.city}, {item.state}, {item.country}') }
-        
-        # context = {'item':Delivery().get_item_details() }
-        
-        return render(request, 'delivery copy.html',context)
-    
+        try:
+            item = Order.objects.get(order_id=order_id)
+            item.order_status = 'delivered'
+            item.save()
+            item_details = Delivery().get_item_details( f'{ item.street_address}, {item.city}, {item.state}, {item.country}')
+            if item_details is not None: 
+                context = {'item': item_details}
+                return render(request, 'delivery copy.html',context)
+            else:
+                context = {
+                    'token': request.POST.get('token'),
+                    'items': AuthView().get_items()
+                }
+                return render(request, 'main_page.html', context)
+        except:
+            context = {
+                'token': request.POST.get('token'),
+                'items': AuthView().get_items()
+            }
+            return render(request, 'main_page.html', context)
+        finally:
+            item.save()
 class NotReachable(View):
     def get(self, request,order_id):
-        item = Order.objects.get(order_id=order_id)
-        item.order_status = 'customer_not_reachable'
-        item.save()
-        context = {'item':Delivery().get_item_details( f'{ item.street_address}, {item.city}, {item.state}, {item.country}') }
-        
-        return render(request, 'delivery copy.html',context)
-    
+        try:
+            item = Order.objects.get(order_id=order_id)
+            item.order_status = 'customer_not_reachable'
+            item.save()
+            item_details = Delivery().get_item_details( f'{ item.street_address}, {item.city}, {item.state}, {item.country}')
+            if item_details is not None: 
+                context = {'item': item_details}
+                return render(request, 'delivery copy.html',context)
+            else:
+                context = {
+                    'token': request.POST.get('token'),
+                    'items': AuthView().get_items()
+                }
+                return render(request, 'main_page.html', context)
+        except:
+            context = {
+                'token': request.POST.get('token'),
+                'items': AuthView().get_items()
+            }
+            return render(request, 'main_page.html', context)
+        finally:
+            item.save()
 class Damaged(View):
     def get(self, request,order_id):
-        item = Order.objects.get(order_id=order_id)
-        item.order_status = 'damaged'
-        item.save()
-        context = {'item':Delivery().get_item_details( f'{ item.street_address}, {item.city}, {item.state}, {item.country}') }
-        
-        # context = {'item':Delivery().get_item_details() }
-        return render(request, 'delivery copy.html', context)
-  
-    
+        try:
+            item = Order.objects.get(order_id=order_id)
+            item.order_status = 'damaged'
+            item.save()
+            item_details = Delivery().get_item_details( f'{ item.street_address}, {item.city}, {item.state}, {item.country}')
+            if item_details is not None: 
+                context = {'item': item_details}
+                return render(request, 'delivery copy.html',context)
+            else:
+                context = {
+                    'token': request.POST.get('token'),
+                    'items': AuthView().get_items()
+                }
+                return render(request, 'main_page.html', context)
+        except:
+            context = {
+                'token': request.POST.get('token'),
+                'items': AuthView().get_items()
+            }
+            return render(request, 'main_page.html', context)
+        finally:
+            item.save()
 class CsRejected(View):
     def get(self, request,order_id):
-        item = Order.objects.get(order_id=order_id)
-        item.order_status = 'customer_rejects'
-        item.save()
-        # context = {'item':Delivery().get_item_details() }
-        context = {'item':Delivery().get_item_details( f'{ item.street_address}, {item.city}, {item.state}, {item.country}') }
-        return render(request, 'delivery copy.html', context)
-  
+        try:
+            item = Order.objects.get(order_id=order_id)
+            item.order_status = 'customer_rejects'
+            item.save()
+            item_details = Delivery().get_item_details( f'{ item.street_address}, {item.city}, {item.state}, {item.country}')
+            if item_details is not None: 
+                context = {'item': item_details}
+                return render(request, 'delivery copy.html',context)
+            else:
+                context = {
+                    'token': request.POST.get('token'),
+                    'items': AuthView().get_items()
+                }
+                return render(request, 'main_page.html', context)
+        except:
+            context = {
+                'token': request.POST.get('token'),
+                'items': AuthView().get_items()
+            }
+            return render(request, 'main_page.html', context)
+        finally:
+            item.save()
+class ResetOrder(View):
+    def get(self, request):
+        items = Order.objects.all()
+        for item in items:
+            item.order_status = 'available'
+            item.save()
+        return render(request, 'post_man.html')
+    
 class AddUser(View):
     def get(self, request):
         max_user = UserModel.objects.all().count()
@@ -229,19 +303,31 @@ class AddUser(View):
         return render(request, 'post_man.html')
     
 class AddOrder(View):
-    def get(self, request):
+    def get(self, request,street,landmark,city,state,country):
         max_order = Order.objects.all().count()
         order1 = Order(order_id='order'+ str(max_order), 
                        customer_name='customer'+ str(max_order), 
                        door_number='door'+ str(max_order), 
                        apartment_number='apartment'+ str(max_order), 
-                       street_address='street'+ str(max_order), 
-                       city='city'+ str(max_order), 
-                       state='state'+ str(max_order), 
-                       country='country'+ str(max_order), 
+                       street_address=street, 
+                       city=city, 
+                       state=state, 
+                       country=country, 
                        pincode='pincode'+ str(max_order), 
                        phone_number='phone'+ str(max_order), 
                        ring_bell=True,
-                       google_link='google'+ str(max_order), landmark='landmark'+ str(max_order), order_weight=100, item_type='item'+ str(max_order), battery_included=True, expected_delivery_date=datetime.now()+timedelta(days=1), priority='super_fast', order_status='available')
+                       google_link='google'+ str(max_order), 
+                       landmark=landmark,
+                        order_weight=100, 
+                        item_type='item'+ str(max_order),
+                          battery_included=True, expected_delivery_date=datetime.now()+timedelta(days=1), priority='super_fast', order_status='available')
         order1.save()
+        return render(request, 'post_man.html')
+    
+class DeleteOrder(View):
+    def get(self, request):
+        #items = Order.objects.get(landmark="chromepet")
+        items = Order.objects.filter(landmark="landmark7")
+        for item in items:
+            item.delete()
         return render(request, 'post_man.html')
